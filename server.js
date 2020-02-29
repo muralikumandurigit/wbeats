@@ -1,6 +1,6 @@
-var db = require('util/database');
+var db = require('./app/util/database');
 var pool = db.getPool();
-const props = require('/app/util/props.js');
+const props = require('./app/util/props.js');
 var express = require('express'),
 app = express(),
 port = process.env.PORT || props.getProperty('prod.server.port');
