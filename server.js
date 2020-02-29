@@ -1,10 +1,11 @@
 var db = require('./app/util/database');
+require('./app/util/global');
 var pool = db.getPool();
 const props = require('./app/util/props.js');
-var express = require('express'),
-app = express(),
+//var express = require('express'),
+//app = express(),
 port = process.env.PORT || props.getProperty('prod.server.port');
-app.listen(port);
+global.app.listen(port);
 
 console.log('todo list RESTful API server started on: ' + port);
 
