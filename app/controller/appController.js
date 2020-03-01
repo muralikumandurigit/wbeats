@@ -1,16 +1,31 @@
-var db = require('../util/mysql');
+var db = require('../util/database');
 var pool = db.getPool();
 
-module.exports = function(app, express) {
-	var api = express.Router();
-	
-	api.get	('/students', () => {
-		var query = 'select * from student_admissions';
+module.exports = {
+	getAllStudents : function () {
+		var query = 'select * from students';
+		var students;
 		pool.getConnection((err, connection) => {
-			connection.query(query, (err, rows) => {
-				res.json({type : "success", code : 200, data : rows});
+			if (err) {
+				console.log('Not able to connect to db. error = ' + err);
+			}
+			else {
+				console.log('Able to connect to db successfully...' + connection);
+			}
+			connection.query(query, (err, rows, fields) => {
+				if(!err) {
+					console.log('Queried successfully and returned rows are ' + rows);
+//					console.log(rows);
+//					console.log(fields);
+//                    db.convertRowsToObj(rows, fields);
+                    students = JSON.stringify(rows);
+				}
+				else {
+					console.log('Query failed with error ' + err);
+				}
 				connection.release;
 			})
 		});
-	});
+		return students;
+	}
 }
