@@ -13,7 +13,7 @@ module.exports = {
         console.log('Created db pool successfully...');
         return pool;
     },
-
+// Not being used currently
     convertRowsToObj: function (rows, fields) {
        var objs = [];
        for (let i of rows) {

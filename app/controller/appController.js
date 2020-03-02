@@ -2,7 +2,7 @@ var db = require('../util/database');
 var pool = db.getPool();
 
 module.exports = {
-	getAllStudents : function () {
+	getAllStudents : function (callback) {
 		var query = 'select * from students';
 		var students;
 		pool.getConnection((err, connection) => {
@@ -15,10 +15,8 @@ module.exports = {
 			connection.query(query, (err, rows, fields) => {
 				if(!err) {
 					console.log('Queried successfully and returned rows are ' + rows);
-//					console.log(rows);
-//					console.log(fields);
-//                    db.convertRowsToObj(rows, fields);
                     students = JSON.stringify(rows);
+                    callback(students);
 				}
 				else {
 					console.log('Query failed with error ' + err);
@@ -26,6 +24,5 @@ module.exports = {
 				connection.release;
 			})
 		});
-		return students;
 	}
 }
