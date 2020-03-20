@@ -35,6 +35,10 @@ module.exports = {
 			})
 		});
     },
+    saveStudent: function (student) {
+
+    },
+
 // Not being used currently
     convertRowsToObj: function (rows, fields) {
        var objs = [];

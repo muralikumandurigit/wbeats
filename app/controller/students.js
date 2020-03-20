@@ -9,5 +9,9 @@ module.exports = {
 			students = JSON.stringify(rows);
 			callback(students);
 		});
+	},
+	saveStudent : function() {
+		
 	}
+
 }
