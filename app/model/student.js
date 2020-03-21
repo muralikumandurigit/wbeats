@@ -1,18 +1,5 @@
 var method = Student.prototype;
 
-function Student(firstName, middleName, lastName, dob, fatherName, motherName, guardianName, comments) {
-	this.firstName = firstName;
-	this.middleName = middleName;
-	this.lastName = lastName;
-	this.dob = dob;
-	this.fatherName = fatherName;
-	this.motherName = motherName;
-	this.guardianName = guardianName;
-	this.comments = comments;
-
-	// Initialization
-	this.id = -1;
-}
 
 function Student(firstName, middleName, lastName, dob, fatherName, motherName, guardianName, comments, id) {
 	this.firstName = firstName;
@@ -23,7 +10,12 @@ function Student(firstName, middleName, lastName, dob, fatherName, motherName, g
 	this.motherName = motherName;
 	this.guardianName = guardianName;
 	this.comments = comments;
-	this.id = id;
+	if (id === undefined) {
+		this.id = -1;
+	}
+	else {
+	   this.id = id;
+	}
 }
 
 method.getFirstName = function() {
