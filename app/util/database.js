@@ -35,6 +35,7 @@ module.exports = {
 			});
 		});
     },
+
     executeInsert: function (query, values, callback) {
         this.getPool().getConnection((err, connection) => {
             if (err) {
@@ -50,6 +51,7 @@ module.exports = {
 				}
 				else {
 					console.log('Insert failed with error ' + err);
+					callback(-1, err);
 				}
 				connection.release;
 			});
