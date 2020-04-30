@@ -10,7 +10,6 @@ var port = props.getProperty('prod.server.port');
 app.listen(port);
 app.use(jwt());
 app.use(errorHandler);
-app.use(jwt());
 
 console.log('todo list RESTful API server started on: ' + port);
 
