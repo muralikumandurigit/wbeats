@@ -2,13 +2,25 @@ const config = require('../../config/config.json');
 const jwt = require('jsonwebtoken');
 var users = require('../users/user');
 var crypt = require('./crypt');
-//const users = [{ id: 1, username: 'murali', password: 'murali', firstName: 'Test', lastName: 'User' }];
 
 
 module.exports = {
+	verifyToken,
     authenticate,
     getAll
 };
+
+ function verifyToken(req, token, callback) {
+     jwt.verify(token, config.secret, (err, decoded) => {
+		 if(err) {
+				callback(err);
+	   	 }
+		 else {
+			req.decoded = decoded;
+			callback();
+		 }
+	 });
+ }
 
  function authenticate(reqbody, callback) {
 	users.getPassword(reqbody.uid, (encPasswd) => {
@@ -32,18 +44,6 @@ module.exports = {
 			});
 		}
 	});
-/*    const user = users.find(u => u.username === username && u.password === password);
-    if (user) {
-        const token = jwt.sign({ sub: user.id }, 
-                               config.secret, 
-                               {expiresIn: 86400 // expires in 24 hours
-                               });
-        const { password, ...userWithoutPassword } = user;
-        return {
-            ...userWithoutPassword,
-            token
-        };
-    } */
 }
 
 async function getAll() {
