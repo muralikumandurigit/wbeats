@@ -75,6 +75,7 @@ ProtectedRouter.post('/student/register', (req, res) => {
 });
 
 app.post('/login', (req, res, next) => {
+	console.log("Request came to login: " + req.body);
 	authService.authenticate(req.body, (token) => {
 	if(token == null) {
 		res.status(401).json({ message: 'Username or password is incorrect' });

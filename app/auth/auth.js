@@ -23,6 +23,7 @@ module.exports = {
  }
 
  function authenticate(reqbody, callback) {
+	console.log("DEBUG: Authenticating : uid ="+reqbody.uid+"  passwd = "+reqbody.passwd);
 	users.getPassword(reqbody.uid, (encPasswd) => {
 		if(encPasswd == null) {
 			console.log("null password from cache");

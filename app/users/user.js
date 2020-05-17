@@ -19,14 +19,19 @@ module.exports = {
 	initialize : function (callback) {
 		var query = "select * from users  where status='ENABLED'";
 		var users;
-		db.executeQuery(query, (rows) => {
-			Object.keys(rows).forEach(key => {
-				var u = rows[key];
-				userCache.set(u.uid, u);
-			});
-			users = JSON.stringify(rows);
-			console.log('Users = ' + users);
-			callback(users);
+		db.executeQuery(query, (rows, error) => {
+			if (rows === null) {
+               callback(null, error);
+			}
+			else {
+				Object.keys(rows).forEach(key => {
+				   var u = rows[key];
+				   userCache.set(u.uid, u);
+			   });
+			   users = JSON.stringify(rows);
+			   console.log('Users = ' + users);
+			   callback(users);	
+			}
 		});
 	},
 	

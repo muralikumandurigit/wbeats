@@ -1,14 +1,27 @@
 var mysql = require('mysql');
+const props = require('../util/props.js');
 var pool;
 module.exports = {
     getPool: function () {
         if (pool) return pool;
+
+	    var dbserver = props.getProperty('prod.db.mysql.server');
+        var dbuser = props.getProperty('prod.db.mysql.username');
+        var dbpassword = props.getProperty('prod.db.mysql.password');
+        var dbdatabase = props.getProperty('prod.db.mysql.database');
+        var dbport = props.getProperty('prod.db.mysql.port');
+
+        console.log("dbuser = " +dbuser);
+        console.log("dbserver = " +dbserver);
+        console.log("dbpassword = " +dbpassword);
+        console.log("dbdatabase = " +dbdatabase);
+        console.log("dbport = " +dbport);
         pool = mysql.createPool({
-            host: '13.233.76.25',
-            user: 'wbeats',
-            password: 'wbeats',
-            database: 'wbeats',
-            port : '3306'
+            host: dbserver,
+            user: dbuser,
+            password: dbpassword,
+            database: dbdatabase,
+            port : dbport
         });
         console.log('Created db pool successfully...');
         return pool;
@@ -18,6 +31,7 @@ module.exports = {
         this.getPool().getConnection((err, connection) => {
 			if (err) {
 				console.log('Not able to connect to db. error = ' + err);
+				callback(null, err);
 			}
 			else {
 				console.log('Able to connect to db successfully...' + connection);
@@ -40,6 +54,7 @@ module.exports = {
         this.getPool().getConnection((err, connection) => {
             if (err) {
 				console.log('Not able to connect to db. error = ' + err);
+				callback(-1, err);
 			}
 			else {
 				console.log('Able to connect to db successfully...' + connection);
