@@ -16,6 +16,7 @@ var printUserCache = function() {
 }
 	
 module.exports = {
+	
 	initialize : function (callback) {
 		var query = "select * from users  where status='ENABLED'";
 		var users;
@@ -29,11 +30,25 @@ module.exports = {
 				   userCache.set(u.uid, u);
 			   });
 			   users = JSON.stringify(rows);
-			   console.log('Users = ' + users);
-			   callback(users);	
+			   var reqbody = new Object();
+			   reqbody.uid = "admin";
+	           reqbody.passwd = "admin";
+		       reqbody.firstName = "admin";
+			   reqbody.lastName = "admin";
+		       reqbody.userType = "admin";
+			   reqbody.comments = "admin";
+			   this.newUser(reqbody, (resp) => {
+				    if (resp == null) {
+					   console.log("Inserted admin user\n");
+				    }
+			   });
+		
+	          console.log('Users = ' + users);
+			  callback(users);
 			}
 		});
 	},
+	
 	
 	getPassword : function(uid, callback) {
 		if(userCache.has(uid) == false) {
