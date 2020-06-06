@@ -1,4 +1,5 @@
 var user = require('../users/user');
+var bodyParser = require('body-parser');
 const errorHandler = require('../err/err');
 const props = require('../util/props.js');
 
@@ -24,6 +25,16 @@ module.exports = {
         
               // Start error handling module
               app.use(errorHandler);
+//app.use(cors());
+
+//              app.use(bodyParser.json()); // support json encoded bodies
+//              app.use(bodyParser.urlencoded({ extended: true })); 
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  next();
+});
 
               // Start Server
               var port = props.getProperty('prod.server.port');

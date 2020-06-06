@@ -1,9 +1,11 @@
 //const jwt = require('jsonwebtoken');
 //var express = require('express');
+var bodyParser = require('body-parser');
 var students = require('../controller/students');
 var user = require('../users/user');
 const authService = require('../auth/auth');
 
+var jsonParser = bodyParser.json();
 
 var app = global.app;
 var express = global.express;
@@ -15,6 +17,7 @@ console.log("Created ProtectedRouter");
 
 var sendResponse = function(res, data) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', '*');
 	res.send(data);
 }
 
@@ -74,9 +77,13 @@ ProtectedRouter.post('/student/register', (req, res) => {
 	});;
 });
 
-app.post('/login', (req, res, next) => {
-	console.log("Request came to login: " + req.body);
+
+app.post('/login', jsonParser, (req, res, next) => {
+	const {uid, passwd} = req.body;
+	console.log("body JSON = " + JSON.stringify(req.body));
 	authService.authenticate(req.body, (token) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
 	if(token == null) {
 		res.status(401).json({ message: 'Username or password is incorrect' });
 	}
@@ -84,10 +91,6 @@ app.post('/login', (req, res, next) => {
 		res.json(token);
 	}
 	});
-
-/*	authService.authenticate(req.body)
-        .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
-        .catch(err => next(err)); */
 });
 
 ProtectedRouter.post('/user/new', (req, res) => {
