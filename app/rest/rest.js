@@ -1,5 +1,4 @@
-//const jwt = require('jsonwebtoken');
-//var express = require('express');
+
 var bodyParser = require('body-parser');
 var students = require('../controller/students');
 var user = require('../users/user');
@@ -11,9 +10,7 @@ var app = global.app;
 var express = global.express;
 const  ProtectedRouter = express.Router();
 console.log("Created ProtectedRouter");
-//module.exports = {
-//	initialize
-//};
+
 
 var sendResponse = function(res, data) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -79,7 +76,6 @@ ProtectedRouter.post('/student/register', (req, res) => {
 
 
 app.post('/login', jsonParser, (req, res, next) => {
-	const {uid, passwd} = req.body;
 	console.log("body JSON = " + JSON.stringify(req.body));
 	authService.authenticate(req.body, (token) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
