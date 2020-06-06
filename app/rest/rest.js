@@ -18,7 +18,12 @@ var sendResponse = function(res, data) {
 	res.send(data);
 }
 
-
+var sendJsonResponse = function(res, data) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+	res.setHeader('Content-Type', 'application/json');
+	res.send({'message' : data});
+}
 	   // Use authenticated routes
        console.log("Using ProtectedRouter for /school");
        app.use('/school', ProtectedRouter);
@@ -81,10 +86,11 @@ app.post('/login', jsonParser, (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', '*');
 	if(token == null) {
-		res.status(401).json({ message: 'Username or password is incorrect' });
+		res.status(401);
+		sendResponse(res, { message: 'Username or password is incorrect' });
 	}
 	else {
-		res.json(token);
+		sendResponse(res, { 'token': token });
 	}
 	});
 });
