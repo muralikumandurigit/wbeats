@@ -27,7 +27,7 @@ module.exports = {
 	users.getPassword(reqbody.uid, (encPasswd) => {
 		if(encPasswd == null) {
 			console.log("null password from cache");
-			return null;
+			callback(null);
 		}
 		else {
 			crypt.comparePassword(reqbody.passwd, encPasswd, (isMatched) => {
