@@ -22,25 +22,25 @@ module.exports = {
 	 });
  }
 
- function authenticate(reqbody, callback) {
+ async function authenticate(reqbody) {
 	console.log("DEBUG: Authenticating : uid ="+reqbody.uid+"  passwd = "+reqbody.passwd);
 	users.getPassword(reqbody.uid, (encPasswd) => {
 		if(encPasswd == null) {
 			console.log("null password from cache");
-			callback(null);
+			return null;
 		}
 		else {
 			crypt.comparePassword(reqbody.passwd, encPasswd, (isMatched) => {
 				if(!isMatched){
 					console.log("Passwords doesn't match");
-					callback(null);
+					return null;
 				}
 				else {
 					console.log("Passwords matched");
-				        callback(jwt.sign({ sub: reqbody.uid }, 
+				        return jwt.sign({ sub: reqbody.uid }, 
                                config.secret, 
-                               {expiresIn: 86400 // expires in 24 hours
-                               }));
+                               {expiresIn: 1 // expires in 24 hours
+                               });
                 }
 			});
 		}

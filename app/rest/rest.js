@@ -83,19 +83,20 @@ ProtectedRouter.post('/student/register', (req, res) => {
 });
 
 
-app.post('/login', jsonParser, (req, res, next) => {
+app.post('/login', jsonParser, async function (req, res, next) {
 	console.log("body JSON = " + JSON.stringify(req.body));
-	authService.authenticate(req.body, (token) => {
-		res.setHeader('Access-Control-Allow-Origin', '*');
-		res.setHeader('Access-Control-Allow-Headers', '*');
-		if (token == null) {
-			res.status(401);
-			sendResponse(res, { message: 'Username or password is incorrect' });
-		}
-		else {
-			sendResponse(res, { 'token': token });
-		}
-	});
+	var token = await authService.authenticate(req.body);
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+	if (token == null) {
+		res.status(401);
+		console.log("Username or password is incorrect");
+		sendResponse(res, { message: 'Username or password is incorrect' });
+	}
+	else {
+		console.log("Authenticated successfully");
+		sendResponse(res, { 'token': token });
+	}
 });
 
 ProtectedRouter.post('/user/new', (req, res) => {
